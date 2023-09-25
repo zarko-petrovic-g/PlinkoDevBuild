@@ -1,0 +1,110 @@
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+html, body {
+  height: 100%;
+}
+canvas {
+  display: block;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000000;
+}
+#unity-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#unity-canvas {
+  
+}
+
+#loading-cover {
+	background-image: url('background.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+background-color: #000000;
+}
+#unity-loading-bar {
+    position: absolute;
+    bottom: 31.54%;
+    left: 50%;
+    width: 39%;
+    height: 3.6%;
+    transform: translateX(-50%);
+}
+
+#unity-fullscreen-button {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 36px;
+    height: 36px;
+    background: url('fullscreen-button.png') no-repeat center;
+    background-size: contain;
+}
+
+.balls-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.balls-container .ball {
+  height: 100%;
+  background-image: url("ball.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0;
+}
+.balls-container .ball.visible {
+  opacity: 1;
+}
+
+.loading-image
+{
+	position: absolute;
+	left:50%;
+	top:85%;
+	height: 5.5%;
+	width: 20%;
+	background-image: url("loading.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	transform: translateX(-50%);
+}
+.loading-image.play
+{
+	background-image: url("play.png");
+	animation-name: example;
+	animation-duration: 750ms;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
+	transform-origin: center center;
+}
+
+@keyframes example {
+  from 	{ transform: translateX(-50%) scale(1); }
+  to 	{ transform: translateX(-50%) scale(1.10); }
+}

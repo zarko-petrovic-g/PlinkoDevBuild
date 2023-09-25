@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <!-- Title and favicon -->
+    <title>MultiPlinko</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.png">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="TemplateData/style.css">
+  </head>
+
+  <body>
+    <!-- Unity container -->
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas"></canvas>
+    </div>
+
+    <!-- Loading cover -->
+    <div id="loading-cover" style="display:none;">
+      <div id="unity-loading-bar">
+        <div class="balls-container"></div>
+      </div>
+      <div class="loading-image"></div>
+    </div>
+
+    <!-- Fullscreen button -->
+    <div id="unity-fullscreen-button" style="display: none;"></div>
+
+    <!-- Unity configuration -->
+    <script>
+      // DOM elements
+      const container = document.querySelector("#unity-container");
+      const canvas = document.querySelector("#unity-canvas");
+      const loadingCover = document.querySelector("#loading-cover");
+      const fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      const loadingImage = document.querySelector(".loading-image");
+
+      // Ball animation
+      const balls = 19;
+      let lastBall = 0;
+
+      // Fullscreen button
+      const hideFullScreenButton = "";
+
+      // Unity configuration
+      const buildUrl = "Build";
+      const loaderUrl = buildUrl + "/PlinkoDevBuild.loader.js";
+      const config = {
+        dataUrl: buildUrl + "/PlinkoDevBuild.data",
+        frameworkUrl: buildUrl + "/PlinkoDevBuild.framework.js",
+        codeUrl: buildUrl + "/PlinkoDevBuild.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "MaxQuest",
+        productName: "MultiPlinko",
+        productVersion: "1.0",
+      };
+
+      // Check if fullscreen is supported
+      const canFullscreen = (function() {
+        for (const key of [
+            'exitFullscreen',
+            'webkitExitFullscreen',
+            'webkitCancelFullScreen',
+            'mozCancelFullScreen',
+            'msExitFullscreen',
+          ]) {
+          if (key in document) {
+            return true;
+          }
+        }
+        return false;
+      }());
+
+      // Update game dimensions
+      function updateGameDimensions() {
+        const containerWidth = container.offsetWidth;
+        const containerHeight = container.offsetHeight;
+        const aspectRatio = canvas.width / canvas.height;
+
+        let newWidth, newHeight;
+        if (containerWidth / containerHeight > aspectRatio) {
+          newWidth = containerHeight * aspectRatio;
+          newHeight = containerHeight;
+        } else {
+          newWidth = containerWidth;
+          newHeight = containerWidth / aspectRatio;
+        }
+
+        canvas.style.width = `${newWidth}px`;
+        canvas.style.height = `${newHeight}px`;
+
+        loadingCover.style.width = `${newWidth}px`;
+        loadingCover.style.height = `${newHeight}px`;
+
+        const ballElements = document.querySelectorAll(".ball");
+
+        ballElements.forEach((ball) => {
+          ball.style.width = `${100 / ballElements.length}%`;
+        });
+      }
+
+      // Handle window resize
+      function handleWindowResize() {
+        updateGameDimensions();
+      }
+
+      // Mobile configuration
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        container.className = "unity-mobile";
+        config.devicePixelRatio = 1;
+      }
+
+      // Ball animation
+      for(let i = 0; i < balls; i++) {
+        const ball = document.createElement("div");
+        ball.className = "ball";
+        loadingCover.querySelector(".balls-container").appendChild(ball);
+      }
+
+      // Show loading cover
+      loadingCover.style.display = "";
+
+      // Load Unity
+      const script = document.createElement("script");
+      script.src = loaderUrl; // searches for build.loader.js
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => { // createUnityInstance - function to triger Unity
+          const currentBall = Math.min(Math.floor(balls * progress / 0.9), balls);
+          const ballElements = document.querySelectorAll(".ball");
+          for(let i = lastBall; i < currentBall; i++) {
+            ballElements[i].classList.add("visible");
+          }
+          lastBall = currentBall;
+        }).then((unityInstance) => {
+          loadingImage.classList.add("play");
+          window.onclick = () => {
+            loadingCover.style.display = "none";
+            if (canFullscreen) {
+              if (!hideFullScreenButton) {
+                fullscreenButton.style.display = "";
+              }
+              fullscreenButton.onclick = () => {
+                unityInstance.SetFullscreen(1);
+              };
+            }
+            window.onclick = null;
+          }
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+
+      // Handle window resize
+      window.addEventListener("resize", handleWindowResize);
+      updateGameDimensions();
+    </script>
+  </body>
+</html>
