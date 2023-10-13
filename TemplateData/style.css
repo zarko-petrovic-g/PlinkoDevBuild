@@ -27,7 +27,6 @@ body {
 }
 
 #loading-cover {
-	background-image: url('background.png');
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-position: center center;
@@ -42,13 +41,30 @@ body {
     align-items: center;
 background-color: #000000;
 }
-#unity-loading-bar {
+#loading-cover.loadingLandscape
+{
+  background-image: url('background.png');
+}
+#loading-cover.loadingPortrait
+{
+  background-image: url('background_p.png');
+}
+.loadingLandscape #unity-loading-bar {
     position: absolute;
-    bottom: 31.54%;
+    top: 64.8%;
     left: 50%;
-    width: 39%;
-    height: 3.6%;
+    width: 43.8%;
+    height: 3.9%;
     transform: translateX(-50%);
+}
+
+.loadingPortrait #unity-loading-bar {
+  position: absolute;
+  top: 50%;
+  left: 50.5%;
+  width: 89.8%;
+  height: 2.6%;
+  transform: translate(-50%, -50%);
 }
 
 #unity-fullscreen-button {

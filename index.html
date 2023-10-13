@@ -41,7 +41,7 @@
       const loadingImage = document.querySelector(".loading-image");
 
       // Ball animation
-      const balls = 19;
+      const balls = 18;
       let lastBall = 0;
 
       // Fullscreen button
@@ -80,7 +80,19 @@
       function updateGameDimensions() {
         const containerWidth = container.offsetWidth;
         const containerHeight = container.offsetHeight;
-        const aspectRatio = canvas.width / canvas.height;
+        let aspectRatio = containerWidth / containerHeight;
+
+        if(aspectRatio > 1)
+        {
+          aspectRatio = 16 / 9;
+          loadingCover.classList.add("loadingLandscape");
+          loadingCover.classList.remove("loadingPortrait");
+        }else
+        {
+          aspectRatio = 9 / 16;
+          loadingCover.classList.remove("loadingLandscape");
+          loadingCover.classList.add("loadingPortrait");
+        }
 
         let newWidth, newHeight;
         if (containerWidth / containerHeight > aspectRatio) {
@@ -138,17 +150,17 @@
           lastBall = currentBall;
         }).then((unityInstance) => {
           loadingImage.classList.add("play");
-          window.onclick = () => {
+          loadingCover.onclick = () => {
             loadingCover.style.display = "none";
-            if (canFullscreen) {
+            /*if (canFullscreen) {
               if (!hideFullScreenButton) {
                 fullscreenButton.style.display = "";
               }
               fullscreenButton.onclick = () => {
                 unityInstance.SetFullscreen(1);
               };
-            }
-            window.onclick = null;
+            }*/
+            loadingCover.onclick = null;
           }
         }).catch((message) => {
           alert(message);
