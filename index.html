@@ -22,10 +22,13 @@
 
     <!-- Loading cover -->
     <div id="loading-cover" style="display:none;">
+      <div class="backgroundImage backgroundLandscape"></div>
+      <div class="backgroundImage backgroundPortrait"></div>
       <div id="unity-loading-bar">
         <div class="balls-container"></div>
       </div>
       <div class="loading-image"></div>
+      <div class="iconSound soundOn"></div>
     </div>
 
     <!-- Fullscreen button -->
@@ -39,6 +42,9 @@
       const loadingCover = document.querySelector("#loading-cover");
       const fullscreenButton = document.querySelector("#unity-fullscreen-button");
       const loadingImage = document.querySelector(".loading-image");
+      const backgroundLandscape = document.querySelector(".backgroundImage.backgroundLandscape");
+      const backgroundPortrait = document.querySelector(".backgroundImage.backgroundPortrait");
+      const iconSound = document.querySelector(".iconSound");
 
       // Ball animation
       const balls = 18;
@@ -85,11 +91,15 @@
         if(aspectRatio > 1)
         {
           aspectRatio = 16 / 9;
+          backgroundLandscape.classList.add("show");
+          backgroundPortrait.classList.remove("show");
           loadingCover.classList.add("loadingLandscape");
           loadingCover.classList.remove("loadingPortrait");
         }else
         {
           aspectRatio = 9 / 16;
+          backgroundLandscape.classList.remove("show");
+          backgroundPortrait.classList.add("show");
           loadingCover.classList.remove("loadingLandscape");
           loadingCover.classList.add("loadingPortrait");
         }
@@ -150,18 +160,34 @@
           lastBall = currentBall;
         }).then((unityInstance) => {
           loadingImage.classList.add("play");
-          loadingCover.onclick = () => {
-            loadingCover.style.display = "none";
-            /*if (canFullscreen) {
-              if (!hideFullScreenButton) {
-                fullscreenButton.style.display = "";
-              }
-              fullscreenButton.onclick = () => {
-                unityInstance.SetFullscreen(1);
-              };
-            }*/
-            loadingCover.onclick = null;
-          }
+          iconSound.classList.add("show");
+          iconSound.addEventListener("click", () => {
+            if(iconSound.classList.contains("soundOn"))
+            {
+              iconSound.classList.add("soundOff");
+              iconSound.classList.remove("soundOn");
+              unityInstance.SendMessage("Audio_Toggle", "SoundToggle_OnValueChanged", 0)
+            }else
+            {
+              iconSound.classList.remove("soundOff");
+              iconSound.classList.add("soundOn");
+              unityInstance.SendMessage("Audio_Toggle", "SoundToggle_OnValueChanged", 1)
+            }
+          })
+          setTimeout(() => {
+            loadingImage.onclick = () => {
+              loadingCover.style.display = "none";
+              /*if (canFullscreen) {
+                if (!hideFullScreenButton) {
+                  fullscreenButton.style.display = "";
+                }
+                fullscreenButton.onclick = () => {
+                  unityInstance.SetFullscreen(1);
+                };
+              }*/
+              loadingImage.onclick = null;
+            }
+          }, 0);
         }).catch((message) => {
           alert(message);
         });
@@ -171,6 +197,21 @@
       // Handle window resize
       window.addEventListener("resize", handleWindowResize);
       updateGameDimensions();
+
+      let bgImg = new Image();
+      bgImg.src = "TemplateData/background.jpg";
+      const landscape = document.querySelector(".backgroundImage.backgroundLandscape");
+      bgImg.onload = () => {
+        landscape.style.backgroundImage = "url('TemplateData/background.jpg')";
+      };
+
+      let bgImgP = new Image();
+      bgImgP.src = "TemplateData/background_p.jpg";
+      const portrait = document.querySelector(".backgroundImage.backgroundPortrait");
+      bgImgP.onload = () => {
+        portrait.style.backgroundImage = "url('TemplateData/background_p.jpg')";
+      };
+      
     </script>
   </body>
 </html>
