@@ -107,8 +107,8 @@ body {
 	position: absolute;
 	left:50%;
 	top:85%;
-	height: 5.5%;
-	width: 20%;
+	height: 50px;
+	width: 310px;
 	background-image: url("loading.png");
 	background-repeat: no-repeat;
 	background-position: center;
