@@ -102,13 +102,26 @@ body {
   opacity: 1;
 }
 
-.loading-image
+.loadingLandscape .loading-image
 {
 	position: absolute;
 	left:50%;
 	top:85%;
-	height: 50px;
-	width: 310px;
+	height: 6%;
+	width: 22%;
+	background-image: url("loading.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	transform: translateX(-50%);
+}
+.loadingPortrait .loading-image
+{
+	position: absolute;
+	left:50%;
+	top:82%;
+	height: 3.44%;
+	width: 39%;
 	background-image: url("loading.png");
 	background-repeat: no-repeat;
 	background-position: center;
@@ -138,8 +151,8 @@ body {
   position: absolute;
   bottom: 4vh;
   left: 4vh;
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
