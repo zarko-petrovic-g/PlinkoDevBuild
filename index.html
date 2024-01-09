@@ -52,14 +52,30 @@
 
       // Fullscreen button
       const hideFullScreenButton = "";
-
-      // Unity configuration
+      
+	  // Compression support check
+	  var dataFile = "/WebGL_Build.data";
+	  var c = document.createElement("canvas");
+      var gl = c.getContext("webgl");
+      var gl2 = c.getContext("webgl2");
+      if ((gl && gl.getExtension('WEBGL_compressed_texture_astc')) || (gl2 && gl2.getExtension('WEBGL_compressed_texutre_astc'))) {
+        dataFile =  "/WebGL_Build_ASTC.data";
+		console.log("Using ASTC compressed texture format.");
+      } else if ((gl && gl.getExtension('WEBGL_compressed_texture_s3tc')) || (gl2 && gl2.getExtension('WEBGL_compressed_texture_s3tc'))) {
+			dataFile = "/WebGL_Build_DXT.data";
+			console.log("Using DXT compressed texture format.");
+	  }
+	  else{
+		console.log("Using default compressed texture format.");
+	  }
+	  
+	  // Unity configuration
       const buildUrl = "Build";
-      const loaderUrl = buildUrl + "/PlinkoDevBuild.loader.js";
+      const loaderUrl = buildUrl + "/WebGL_Build.loader.js";
       const config = {
-        dataUrl: buildUrl + "/PlinkoDevBuild.data",
-        frameworkUrl: buildUrl + "/PlinkoDevBuild.framework.js",
-        codeUrl: buildUrl + "/PlinkoDevBuild.wasm",
+        dataUrl: buildUrl + dataFile,
+        frameworkUrl: buildUrl + "/WebGL_Build.framework.js",
+        codeUrl: buildUrl + "/WebGL_Build.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MaxQuest",
         productName: "MultiPlinko",
