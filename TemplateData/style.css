@@ -57,7 +57,7 @@ body {
 }
 .loadingLandscape #unity-loading-bar {
     position: absolute;
-    top: 64.8%;
+    top: 48.4%;
     left: 50%;
     width: 43.8%;
     height: 3.9%;
@@ -67,9 +67,9 @@ body {
 .loadingPortrait #unity-loading-bar {
   position: absolute;
   top: 50%;
-  left: 50.5%;
-  width: 89.8%;
-  height: 2.6%;
+  left: 50%;
+  width: 89%;
+  height: 2.4%;
   transform: translate(-50%, -50%);
 }
 
